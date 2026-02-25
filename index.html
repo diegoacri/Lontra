@@ -1,39 +1,515 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Lontre — Lutrinae</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Le Lontre Affascinanti - Lutrinae</title>
   <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;padding:24px;max-width:900px;margin:auto;color:#111}
-    h1,h2{color:#0b3b57}
-    p{margin:0 0 1em}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.8;
+      color: #2c3e50;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0a4d68 0%, #088395 100%);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: 5%;
+      width: 250px;
+      height: 250px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 50%;
+      animation: float 8s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(30px); }
+    }
+
+    h1 {
+      font-size: 3.5em;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+      animation: slideDown 0.8s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .subtitle {
+      font-size: 1.3em;
+      font-weight: 300;
+      position: relative;
+      z-index: 1;
+      animation: slideDown 0.8s ease-out 0.2s both;
+    }
+
+    .music-player {
+      background: white;
+      padding: 20px;
+      margin: 30px auto;
+      max-width: 500px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .music-label {
+      color: #0a4d68;
+      font-weight: bold;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    audio {
+      width: 100%;
+      height: 40px;
+      border-radius: 10px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin: 40px 0;
+    }
+
+    .gallery-item {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+      animation: fadeInUp 0.6s ease-out;
+      cursor: pointer;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+
+    .gallery-caption {
+      padding: 20px;
+      color: #2c3e50;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .content-section {
+      background: white;
+      padding: 40px;
+      margin: 30px 0;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    .content-section h2 {
+      color: #0a4d68;
+      font-size: 2.2em;
+      margin-bottom: 20px;
+      border-bottom: 3px solid #088395;
+      padding-bottom: 10px;
+    }
+
+    .content-section p {
+      margin-bottom: 15px;
+      text-align: justify;
+      color: #444;
+    }
+
+    .feature-box {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 25px;
+      border-radius: 10px;
+      margin: 20px 0;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .feature-icon {
+      font-size: 3em;
+      text-align: center;
+    }
+
+    .feature-text h3 {
+      margin-bottom: 8px;
+      font-size: 1.3em;
+    }
+
+    .fun-facts {
+      background: #f0f8ff;
+      border-left: 5px solid #088395;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+
+    .fun-facts h3 {
+      color: #0a4d68;
+      margin-bottom: 12px;
+    }
+
+    .fun-facts ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .fun-facts li {
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .fun-facts li:before {
+      content: '🦦';
+      margin-right: 12px;
+      font-size: 1.2em;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin: 30px 0;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 25px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: scale(1.05);
+    }
+
+    .stat-number {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .stat-label {
+      font-size: 0.9em;
+      opacity: 0.9;
+      margin-top: 8px;
+    }
+
+    footer {
+      background: #0a4d68;
+      color: white;
+      text-align: center;
+      padding: 30px;
+      margin-top: 50px;
+    }
+
+    .scroll-animation {
+      opacity: 0;
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2em;
+      }
+
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .content-section {
+        padding: 25px;
+      }
+
+      .feature-box {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+    }
+
+    .wave {
+      position: relative;
+      height: 100px;
+      overflow: hidden;
+    }
+
+    .wave svg {
+      width: 100%;
+      height: 100%;
+    }
   </style>
 </head>
 <body>
-  <h1>Le lontre (Lutrinae Bonaparte, 1838)</h1>
-  <p>Le lontre (Lutrinae Bonaparte, 1838) sono una sottofamiglia di Mustelidi (Mustelidae) dalle abitudini anfibie. Ne esistono tredici specie ripartite in sette generi.</p>
 
-  <h2>Descrizione</h2>
-  <p>Tutti i membri di questa sottofamiglia hanno un corpo allungato, zampe corte e palmate, una coda lunga e potente e una testa rotonda con un muso smussato. Alle lontre appartengono i rappresentanti più grandi della loro famiglia (la lontra gigante del Brasile e la lontra marina, con la preistorica Megalenhydris barbaricina, trovata in Sardegna, che probabilmente raggiungeva dimensioni ancora più grandi), che raggiungono una lunghezza di circa un metro e un peso compreso tra 22 e 45 chilogrammi.</p>
+  <header>
+    <h1>🦦 Le Lontre Affascinanti 🦦</h1>
+    <p class="subtitle">Scopri il Mondo Magico dei Mustelidi Acquatici</p>
+  </header>
 
-  <p>Come presso tutti i Mustelidi, i maschi sono circa un quarto più grandi delle femmine. La pelliccia è uniformemente bruno-grigiastra, a volte leggermente screziata e spesso un po' più chiara sul «colletto» e/o sul ventre. Con più di 1000 peli per millimetro quadrato, hanno una delle pellicce più fitte del regno animale. Grazie alla struttura della pelliccia - con peli di guardia che proteggono un sottopelo fitto e morbido - sono in grado di trattenere uno strato d'aria isolante intorno al corpo anche rimanendo in acqua per molto tempo. Inoltre, quando sono in acqua, possono chiudere le piccole orecchie e le narici.</p>
+  <div class="music-player">
+    <label class="music-label">🎵 Musica Rilassante dell'Oceano</label>
+    <audio controls>
+      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+      Il tuo browser non supporta l'elemento audio.
+    </audio>
+  </div>
 
-  <h2>Distribuzione e habitat</h2>
-  <p>Le lontre si trovano in quasi tutto il mondo: sono assenti solo in Australia e sulle isole remote. Vivono principalmente vicino all'acqua. Sono eccellenti nuotatrici e subacquee e hanno colonizzato tutti i tipi di corsi d'acqua interni, persino le coste rocciose del mare. Di norma, non si trovano mai a più di 500 metri dall'acqua. A volte si nascondono in tane abbandonate da altri animali o sotto le pietre, ma possiedono almeno un rifugio permanente fuori dall'acqua. L'ingresso può essere sott'acqua, ma la tana stessa è sempre sopra la superficie. Alcune specie creano persino tane comprendenti più camere.</p>
+  <div class="container">
 
-  <p>Le lontre sono animali territoriali. Il territorio di un maschio è solitamente più ampio di quello delle femmine, ma può sovrapporsi al loro territorio. I conspecifici dello stesso sesso vengono per lo più allontanati.</p>
+    <!-- Gallery -->
+    <section class="gallery">
+      <div class="gallery-item">
+        <img src="https://tse2.mm.bing.net/th/id/OIP.WBr1OiS_8KwLJXfukEyarwHaE7?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Lontra adorabile">
+        <div class="gallery-caption">Lontra Adorabile</div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://p0.pikist.com/photos/931/138/animal-brown-detail-fur-furry-lake-mammal-otter-swim-thumbnail.jpg" alt="Lontra in acqua">
+        <div class="gallery-caption">Nuotatrice Elegante</div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://www.kodino.com/it/wp-content/uploads/d0d3b61c-91d5-47b2-a37a-0e7960e87a6e.jpg" alt="Lontra con bambino">
+        <div class="gallery-caption">Madre Amorevole</div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://tse4.mm.bing.net/th/id/OIP.1vCEe70-R8c_DsBG14GenAHaFP?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Lontra giocosa">
+        <div class="gallery-caption">Gioco in Acqua</div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://th.bing.com/th/id/R.9f2d3fa4eefab2ec03a013bbb85787e3?rik=GPCuaWP7H3LmVg&pid=ImgRaw&r=0" alt="Lontra riposa">
+        <div class="gallery-caption">Pausa Rilassante</div>
+      </div>
+      <div class="gallery-item">
+        <img src="https://tse1.mm.bing.net/th/id/OIP.vjkW9ySIFsd49nGzfBBFAAHaE7?w=267&h=180&c=7&r=0&o=7&pid=1.7&rm=3" alt="Famiglia di lontre">
+        <div class="gallery-caption">Famiglia Unita</div>
+      </div>
+    </section>
 
-  <h2>Biologia</h2>
-  <p>La lontra marina è ben adattata alla vita in mare. Le lontre nuotano muovendo le zampe posteriori e la coda. Possono rimanere sott'acqua per un massimo di otto minuti. A terra, si muovono spesso in una combinazione di corsa e scivolata sul ventre. Sebbene preferiscano l'acqua come habitat, possono, se necessario, coprire distanze più lunghe sulla terraferma, ad esempio quando devono cercare corsi d'acqua non ricoperti dal ghiaccio in inverno. A terra possono raggiungere velocità fino a 29 km/h. Le lontre possono essere diurne o notturne, ma di solito sono più attive di notte. Il comportamento delle lontre è stato studiato in modo approfondito dal biologo marino ed etologo Josef Besonders, che ha identificato diverse strategie di caccia e interazioni sociali complesse tra questi animali.[1][2]</p>
+    <!-- Descrizione -->
+    <section class="content-section">
+      <h2>Chi Sono le Lontre? 🦦</h2>
+      <p>Le lontre (Lutrinae Bonaparte, 1838) sono una sottofamiglia affascinante di Mustelidi dalle abitudini anfibie. Ne esistono tredici specie ripartite in sette generi, distribuite in quasi tutto il mondo. Questi straordinari animali hanno catturato il cuore degli amanti della fauna marina con la loro intelligenza, agilità e comportamenti sociali affascinanti.</p>
+      <p>Con il loro corpo elegante e sinuoso, le lontre rappresentano alcuni dei nuotatori più efficienti del regno animale. Dalla minuscola lontra asiatica alla maestosa lontra gigante del Brasile, ogni specie ha le sue caratteristiche uniche e adattamenti straordinari alla vita acquatica.</p>
 
-  <p>Come il resto dei Mustelidi, le lontre sono carnivore. Di solito catturano in acqua le loro prede, costituite da pesci, rane, granchi e altri invertebrati. Le lontre hanno un metabolismo molto elevato: ad esempio, la lontra comune deve assumere giornalmente una quantità di cibo pari al 15% del suo peso corporeo, una lontra marina fino al 20-25%, a seconda della temperatura dell'acqua. In acque fredde di 10 °C devono catturare circa 100 grammi di pesce all'ora per sopravvivere. La maggior parte delle specie caccia da tre a cinque ore al giorno, le femmine che allattano fino a otto ore.</p>
+      <div class="feature-box">
+        <div class="feature-icon">🌊</div>
+        <div class="feature-text">
+          <h3>Maestre del Nuoto</h3>
+          <p>Le lontre possono rimanere sott'acqua per fino a 8 minuti e nuotano con una grazia ineguagliabile, utilizzando la loro coda potente e le zampe palmate.</p>
+        </div>
+      </div>
 
-  <p>Le lontre hanno ghiandole anali ben sviluppate. Marcano i confini del loro territorio e quindi probabilmente «comunicano» così la volontà e la possibilità di accoppiarsi (estro). Mentre i maschi di solito vivono solitari, le femmine spesso formano un gruppo familiare con i loro piccoli fino alla gravidanza successiva. L'accoppiamento avviene solitamente alla fine dell'inverno o all'inizio della primavera e i piccoli, da uno a cinque, nascono tra aprile e maggio. I piccoli pesano circa 130 grammi alla nascita e aprono gli occhi dopo circa un mese. Iniziano le lezioni di nuoto quando hanno circa due mesi. Lasciano la madre quando hanno circa un anno e raggiungono la maturità sessuale quando hanno due o tre anni.</p>
+      <div class="feature-box" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+        <div class="feature-icon">💪</div>
+        <div class="feature-text">
+          <h3>Pelliccia Straordinaria</h3>
+          <p>Con più di 1000 peli per millimetro quadrato, le lontre hanno una delle pelliccie più fitte del regno animale, che le isola perfettamente dall'acqua fredda.</p>
+        </div>
+      </div>
 
-  <h2>Pagina condivisa</h2>
-  <p>Risorsa condivisa salvata localmente:</p>
-  <iframe src="assets/shared_page.html" title="Pagina condivisa" style="width:100%;height:640px;border:2px solid #0b3b57;border-radius:4px;"></iframe>
+      <div class="feature-box" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+        <div class="feature-icon">🍽️</div>
+        <div class="feature-text">
+          <h3>Appetito Impressionante</h3>
+          <p>Le lontre hanno un metabolismo elevato e devono mangiare il 15-25% del loro peso corporeo ogni giorno per mantenersi energiche.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Statistiche -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-number">13</div>
+        <div class="stat-label">Specie di Lontre</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">1m</div>
+        <div class="stat-label">Lunghezza Massima</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">45kg</div>
+        <div class="stat-label">Peso Massimo</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">8 min</div>
+        <div class="stat-label">Apnea Massima</div>
+      </div>
+    </div>
+
+    <!-- Descrizione Dettagliata -->
+    <section class="content-section">
+      <h2>Caratteristiche Fisiche 🎨</h2>
+      <p>Tutti i membri di questa sottofamiglia straordinaria hanno un corpo allungato e sinuoso, zampe corte e palmate, una coda lunga e potente e una testa rotonda con un muso smussato. La loro forma è perfettamente ottimizzata per la vita acquatica, combinando eleganza con efficienza funzionale.</p>
+      <p>La pelliccia è uniformemente bruno-grigiastra, a volte leggermente screziata e spesso un po' più chiara sul "colletto" e/o sul ventre. Grazie alla struttura speciale della loro pelliccia - con peli di guardia che proteggono un sottopelo fitto e morbido - sono in grado di trattenere uno strato d'aria isolante intorno al corpo anche rimanendo in acqua per molto tempo. Quando sono in acqua, possono chiudere le piccole orecchie e le narici con precisione affascinante.</p>
+
+      <div class="fun-facts">
+        <h3>🎯 Curiosità Affascinanti sulle Lontre</h3>
+        <ul>
+          <li>Le lontre usano strumenti come pietre per rompere i gusci dei molluschi</li>
+          <li>Sono tra gli animali più intelligenti della natura</li>
+          <li>Hanno una vita sociale complessa e aiuti reciproci</li>
+          <li>Lasciano "latrine" per marcatura territoriale</li>
+          <li>Possono dormire mentre nuotano in cerchio</li>
+          <li>La loro longevità raggiunge i 15-20 anni in natura</li>
+          <li>Grandi consumatrici di frutti di mare e pesci</li>
+          <li>Femmine sono eccellenti madri protettive</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Habitat -->
+    <section class="content-section">
+      <h2>Habitat e Distribuzione 🌍</h2>
+      <p>Le lontre si trovano in quasi tutto il mondo, eccetto in Australia e sulle isole remote. Vivono principalmente vicino all'acqua, essendo eccellenti nuotatrici e subacquee. Hanno colonizzato tutti i tipi di corsi d'acqua interni, dai fiumi agli stagni, persino le coste rocciose del mare agitato.</p>
+      <p>Di norma, le lontre non si trovano mai a più di 500 metri dall'acqua. A volte si nascondono in tane abbandonate da altri animali o sotto le pietre, ma possiedono almeno un rifugio permanente fuori dall'acqua. L'ingresso può essere sott'acqua, ma la tana stessa è sempre sopra la superficie. Alcune specie create tane impressionanti con più camere, come veri e propri appartamenti acquatici!</p>
+
+      <div class="feature-box" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+        <div class="feature-icon">🏠</div>
+        <div class="feature-text">
+          <h3>Animali Territoriali</h3>
+          <p>Le lontre sono territoriali: il territorio di un maschio è più ampio di quello delle femmine, ma può sovrapporsi. Marcano i confini con ghiandole anali ben sviluppate e comunicano la loro presenza agli altri.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Biologia -->
+    <section class="content-section">
+      <h2>Comportamento e Biologia 🧬</h2>
+      <p>La lontra marina è extraordinariamente ben adattata alla vita in mare. Le lontre nuotano muovendo le zampe posteriori e la coda con movimenti sinuosi e coordinati. A terra, si muovono spesso in una combinazione di corsa e scivolata sul ventre, un comportamento affascinante da osservare.</p>
+      <p>Sebbene preferiscano l'acqua come habitat, possono coprire distanze più lunghe sulla terraferma, ad esempio quando devono cercare corsi d'acqua non ricoperti dal ghiaccio in inverno. A terra possono raggiungere velocità fino a 29 km/h! Le lontre possono essere diurne o notturne, ma di solito sono più attive di notte.</p>
+
+      <div class="fun-facts">
+        <h3>💭 Comportamenti Sociali Affascinanti</h3>
+        <ul>
+          <li>Mentre i maschi vivono solitari, le femmine formano gruppi familiari coesi</li>
+          <li>L'accoppiamento avviene alla fine dell'inverno o inizio primavera</li>
+          <li>I piccoli nascono tra aprile e maggio, da uno a cinque per parto</li>
+          <li>I cuccioli pesano circa 130 grammi alla nascita</li>
+          <li>Aprono gli occhi dopo circa un mese di vita</li>
+          <li>Iniziano lezioni di nuoto a due mesi di età</li>
+          <li>Rimangono con la madre fino a un anno</li>
+          <li>Raggiungono maturità sessuale a 2-3 anni</li>
+        </ul>
+      </div>
+
+      <div class="feature-box" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+        <div class="feature-icon">🍖</div>
+        <div class="feature-text">
+          <h3>Carnivori Specializzati</h3>
+          <p>Le lontre catturano prede in acqua: pesci, rane, granchi e altri invertebrati. In acque fredde di 10°C devono catturare circa 100 grammi di pesce all'ora per sopravvivere!</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <p>🦦 Pagina dedicata alle lontre - Animali straordinari e affascinanti della natura 🦦</p>
+    <p>Scopri di più sulla conservazione e protezione delle lontre nel loro habitat naturale.</p>
+  </footer>
+
+  <script>
+    // Animazione di scorrimento
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Osserva tutti gli elementi con la classe scroll-animation
+    document.querySelectorAll('.content-section, .gallery-item').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+      observer.observe(el);
+    });
+  </script>
 
 </body>
 </html>
