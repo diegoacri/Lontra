@@ -152,11 +152,64 @@
       width: 100%;
       height: 250px;
       object-fit: cover;
-      transition: transform 0.5s ease;
+      transition: all 0.5s ease;
+      animation: imageSlideIn 0.8s ease-out;
+      filter: brightness(0.95);
     }
 
     .gallery-item:hover img {
-      transform: scale(1.1);
+      transform: scale(1.15) rotate(2deg);
+      filter: brightness(1.1) saturate(1.2);
+      box-shadow: 0 0 20px rgba(8, 131, 149, 0.4);
+    }
+
+    @keyframes imageSlideIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9) rotateY(15deg);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) rotateY(0deg);
+      }
+    }
+
+    @keyframes imagePulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    @keyframes imageGlow {
+      0%, 100% {
+        box-shadow: 0 0 10px rgba(8, 131, 149, 0.2);
+      }
+      50% {
+        box-shadow: 0 0 30px rgba(102, 126, 234, 0.6);
+      }
+    }
+
+    .gallery-item:nth-child(2) img {
+      animation: imageSlideIn 0.8s ease-out 0.1s both;
+    }
+
+    .gallery-item:nth-child(3) img {
+      animation: imageSlideIn 0.8s ease-out 0.2s both;
+    }
+
+    .gallery-item:nth-child(4) img {
+      animation: imageSlideIn 0.8s ease-out 0.3s both;
+    }
+
+    .gallery-item:nth-child(5) img {
+      animation: imageSlideIn 0.8s ease-out 0.4s both;
+    }
+
+    .gallery-item:nth-child(6) img {
+      animation: imageSlideIn 0.8s ease-out 0.5s both;
     }
 
     .gallery-caption {
@@ -181,6 +234,48 @@
       margin-bottom: 20px;
       border-bottom: 3px solid #088395;
       padding-bottom: 10px;
+      position: relative;
+      animation: titleSlideAndGlow 0.8s ease-out;
+      overflow: hidden;
+    }
+
+    .content-section h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: -100%;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #088395, transparent);
+      animation: underlineSlide 1.2s ease-out 0.3s forwards;
+    }
+
+    @keyframes titleSlideAndGlow {
+      from {
+        opacity: 0;
+        transform: translateX(-50px);
+        text-shadow: 0 0 0px rgba(8, 131, 149, 0);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+        text-shadow: 0 2px 10px rgba(8, 131, 149, 0.3);
+      }
+    }
+
+    @keyframes underlineSlide {
+      from {
+        left: -100%;
+      }
+      to {
+        left: 100%;
+      }
+    }
+
+    .content-section h2:hover {
+      text-shadow: 0 4px 15px rgba(8, 131, 149, 0.5);
+      color: #088395;
+      transition: all 0.3s ease;
     }
 
     .content-section p {
@@ -209,6 +304,18 @@
     .feature-text h3 {
       margin-bottom: 8px;
       font-size: 1.3em;
+      animation: bounceTitle 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    @keyframes bounceTitle {
+      from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     .fun-facts {
@@ -222,6 +329,41 @@
     .fun-facts h3 {
       color: #0a4d68;
       margin-bottom: 12px;
+      animation: titleReveal 0.8s ease-out;
+      position: relative;
+      padding-left: 40px;
+    }
+
+    .fun-facts h3::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #088395, transparent);
+      animation: fillTitle 0.8s ease-out forwards;
+      opacity: 0.2;
+      border-radius: 50%;
+    }
+
+    @keyframes titleReveal {
+      from {
+        opacity: 0;
+        transform: rotateX(90deg) translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: rotateX(0) translateY(0);
+      }
+    }
+
+    @keyframes fillTitle {
+      from {
+        width: 0;
+      }
+      to {
+        width: 30px;
+      }
     }
 
     .fun-facts ul {
@@ -508,6 +650,141 @@
       el.style.transform = 'translateY(30px)';
       el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
       observer.observe(el);
+    });
+
+    // Effetto parallax sulle immagini
+    window.addEventListener('scroll', function() {
+      const images = document.querySelectorAll('.gallery-item img');
+      images.forEach((img, index) => {
+        const scrollPosition = window.scrollY;
+        const elementPosition = img.parentElement.offsetTop;
+        const distance = elementPosition - scrollPosition;
+        
+        if (distance > -500 && distance < window.innerHeight) {
+          img.style.transform = `translateY(${distance * 0.1}px)`;
+        }
+      });
+    });
+
+    // Effetto movimento leggero delle immagini
+    document.querySelectorAll('.gallery-item').forEach((item, index) => {
+      item.addEventListener('mousemove', function(e) {
+        const img = this.querySelector('img');
+        const rect = this.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const rotateX = (y - rect.height / 2) / 10;
+        const rotateY = (x - rect.width / 2) / 10;
+        
+        img.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.15)`;
+      });
+      
+      item.addEventListener('mouseleave', function() {
+        const img = this.querySelector('img');
+        img.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1.1)';
+      });
+    });
+
+    // Effetto di brillantezza al click
+    document.querySelectorAll('.gallery-item img').forEach(img => {
+      img.addEventListener('click', function() {
+        this.style.animation = 'imageGlow 0.6s ease-out';
+        setTimeout(() => {
+          this.style.animation = '';
+        }, 600);
+      });
+    });
+
+    // Animazione casuale al caricamento
+    window.addEventListener('load', function() {
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      galleryItems.forEach((item, index) => {
+        setTimeout(() => {
+          item.style.opacity = '1';
+        }, index * 100);
+      });
+    });
+
+    // Effetto di brillantezza ai titoli h2 al hover
+    document.querySelectorAll('.content-section h2').forEach((title, index) => {
+      title.addEventListener('mouseenter', function() {
+        this.style.color = '#088395';
+        this.style.textShadow = '0 6px 20px rgba(8, 131, 149, 0.6)';
+        this.style.transform = 'scale(1.02)';
+        this.style.transformOrigin = 'left';
+        this.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      });
+      
+      title.addEventListener('mouseleave', function() {
+        this.style.color = '#0a4d68';
+        this.style.textShadow = '0 2px 10px rgba(8, 131, 149, 0.3)';
+        this.style.transform = 'scale(1)';
+      });
+    });
+
+    // Effetto wave letter per i titoli
+    document.querySelectorAll('.content-section h2, .fun-facts h3, .feature-text h3').forEach(title => {
+      title.addEventListener('mouseenter', function() {
+        const letters = this.textContent.split('');
+        let html = '';
+        letters.forEach((letter, index) => {
+          if (letter === ' ') {
+            html += '<span style="margin-right: 0.2em;"></span>';
+          } else {
+            html += `<span style="display: inline-block; animation: wave 0.6s ease-in-out ${index * 0.05}s; transform-origin: bottom;">${letter}</span>`;
+          }
+        });
+        this.innerHTML = html;
+      });
+    });
+
+    // Aggiunta dell'animazione wave al CSS dinamicamente
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes wave {
+        0%, 100% { transform: translateY(0) rotateZ(0deg); }
+        50% { transform: translateY(-10px) rotateZ(5deg); }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Effetto glow ai titoli quando vengono scorsi in vista
+    const titleObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const title = entry.target;
+          title.style.animation = 'none';
+          setTimeout(() => {
+            title.style.animation = 'titleSlideAndGlow 0.8s ease-out';
+          }, 10);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.content-section h2, .fun-facts h3').forEach(title => {
+      titleObserver.observe(title);
+    });
+
+    // Effetto di colore graduale al passaggio del mouse su tutti i titoli
+    const allTitles = document.querySelectorAll('h2, h3');
+    allTitles.forEach(title => {
+      title.style.cursor = 'pointer';
+      title.addEventListener('click', function() {
+        // Effetto pulse al click
+        const pulseStyle = document.createElement('style');
+        pulseStyle.textContent = `
+          @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+          }
+        `;
+        document.head.appendChild(pulseStyle);
+        this.style.animation = 'titlePulse 0.6s ease-out';
+        setTimeout(() => {
+          this.style.animation = '';
+        }, 600);
+      });
     });
   </script>
 
